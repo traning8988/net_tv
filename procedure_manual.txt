@@ -1,0 +1,9 @@
+・create_table.sqlにデータベース作成、テーブル作成を記述
+
+・mysqlにログインしてcreate_table.sqlを実行
+mysql -u root -p < create_table.sql
+パスワードを入力
+
+・サンプルデータを挿入する
+mysql -u root -p net_tv < import_data.sql
+パスワードを入力
