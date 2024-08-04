@@ -1,0 +1,42 @@
+1よく見られているエピソードを知りたいです。エピソード視聴数トップ3のエピソードタイトルと視聴数を取得してください
+
+SELECT e.title, vr.views 
+  FROM episodes e Inner JOIN view_records vr
+  ON e.id = vr.episode_id
+  ORDER BY vr.views DESC LIMIT 3;
+
+2よく見られているエピソードの番組情報やシーズン情報も合わせて知りたいです。
+ エピソード視聴数トップ3の番組タイトル、シーズン数、エピソード数、エピソードタイトル、視聴数を取得してください
+
+SELECT p.title AS program_title, s.season_num, e.title AS episode_title, vr.views
+  FROM episodes e　JOIN view_records vr 
+  ON e.id = vr.episode_id
+  LEFT JOIN seasons s ON e.season_id = s.id
+  LEFT JOIN programs p ON s.program_id = p.id
+  ORDER BY vr.views DESC　LIMIT 3;
+
+3本日の番組表を表示するために、本日、どのチャンネルの、何時から、何の番組が放送されるのかを知りたいです。
+ 本日放送される全ての番組に対して、チャンネル名、放送開始時刻(日付+時間)、放送終了時刻、シーズン数、エピソード数、エピソードタイトル、エピソード詳細を取得してください。
+ なお、番組の開始時刻が本日のものを本日方法される番組とみなすものとします
+
+SELECT c.name AS channel_name, ps.program_start, ps.program_end, s.season_num, e.title AS episode_title, e.description
+  FROM program_slots ps
+  JOIN programs p ON ps.program_id = p.id
+  LEFT JOIN episodes e ON p.id = e.id
+  LEFT JOIN seasons s ON e.season_id = s.id
+  JOIN channels c ON ps.channel_id = c.id
+  WHERE DATE(ps.program_start) = CURDATE()
+  ORDER BY ps.program_start;
+
+4ドラマというチャンネルがあったとして、ドラマのチャンネルの番組表を表示するために、本日から一週間分、何日の何時から何の番組が放送されるのかを知りたいです。
+ドラマのチャンネルに対して、放送開始時刻、放送終了時刻、シーズン数、エピソード数、エピソードタイトル、エピソード詳細を本日から一週間分取得してください
+
+SELECT ps.program_start, ps.program_end, s.season_num, e.title AS episode_title, e.description
+  FROM program_slots ps
+  JOIN programs p ON ps.program_id = p.id
+  LEFT JOIN episodes e ON p.id = e.id
+  LEFT JOIN seasons s ON e.season_id = s.id
+  JOIN channels c ON ps.channel_id = c.id
+  WHERE c.name IN ('ドラマ1', 'ドラマ2')
+  AND ps.program_start BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
+  ORDER BY ps.program_start;
