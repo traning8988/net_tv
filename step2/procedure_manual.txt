@@ -1,0 +1,7 @@
+1.2データベースを呼応築するcreate_table.sqlファイルを実行
+mysql -u root -p < create_table.sql
+パスワードを入力
+
+3サンプルデータを挿入する
+mysql -u root -p net_tv < import_data.sql
+パスワードを入力

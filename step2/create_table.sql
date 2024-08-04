@@ -28,6 +28,7 @@ CREATE TABLE programs (
 
 CREATE TABLE seasons (
    id           INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+   season_num   INT,
    program_id   INT                NOT NULL,
    FOREIGN KEY (program_id)  REFERENCES programs (id)    ON DELETE CASCADE,
    INDEX (program_id)
@@ -79,3 +80,4 @@ CREATE TABLE view_records (
     INDEX (episode_id, views)
 ) 
 ; 
+
